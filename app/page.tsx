@@ -2,7 +2,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-yellow-50">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 border border-yellow-100">
-        <h1 className="text-2xl font-bold text-center mb-6">Iniciar sesión</h1>
+        <h1 className="text-2xl font-bold text-center text-gray-500 mb-6">Iniciar sesión</h1>
         <form className="space-y-4">
           <div className="text-center mb-6">
             <h2 className="text-xl font-bold text-yellow-500">¡Bienvenido a Amarillos!</h2>
@@ -19,7 +19,7 @@ const HomePage = () => {
             <input
               type="text"
               id="username"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
               placeholder="Ingresa tu usuario"
             />
           </div>
@@ -31,13 +31,13 @@ const HomePage = () => {
             <input
               type="password"
               id="password"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
               placeholder="Ingresa tu contraseña"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600"
+            className="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 cursor-pointer"
           >
             Iniciar sesión
           </button>
