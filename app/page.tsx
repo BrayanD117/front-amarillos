@@ -1,6 +1,6 @@
 const HomePage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-yellow-50">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 via-yellow-200 to-orange-200">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 border border-yellow-100">
         <h1 className="text-2xl font-bold text-center text-gray-500 mb-6">Iniciar sesión</h1>
         <form className="space-y-4">
