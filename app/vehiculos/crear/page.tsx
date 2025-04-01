@@ -27,7 +27,8 @@ interface Combustible {
 }
 
 interface VehiculoFormData {
-  idUsuario: number;
+  cedula: string;
+  idUsuario?: number;
   usuario?: Usuario;
   idTarjeta: number;
   tarjeta?: Tarjeta;
@@ -43,10 +44,10 @@ interface VehiculoFormData {
   idServicio: number;
   servicio?: Servicio;
   importacion: string;
-  fechaImportacion: Date;
+  fechaImportacion: string;
   puertas: number;
-  fechaMatricula: Date;
-  fechaExpedicion: Date;
+  fechaMatricula: string;
+  fechaExpedicion: string;
   organismo: string;
   qr: string;
   chasis: string;
@@ -69,6 +70,8 @@ interface Opciones {
 
 const VehiclesForm: React.FC = () => {
   const router = useRouter();
+  const today = new Date().toISOString().split('T')[0];
+
   const [opciones, setOpciones] = useState<Opciones>({
     usuarios: [],
     tarjetas: [],
@@ -78,7 +81,7 @@ const VehiclesForm: React.FC = () => {
   });
   
   const [formData, setFormData] = useState<VehiculoFormData>({
-    idUsuario: 0,
+    cedula: '',
     idTarjeta: 0,
     idEstado: 0,
     interno: '',
@@ -90,10 +93,10 @@ const VehiclesForm: React.FC = () => {
     color: '',
     idServicio: 0,
     importacion: '',
-    fechaImportacion: new Date(),
+    fechaImportacion: today,
     puertas: 0,
-    fechaMatricula: new Date(),
-    fechaExpedicion: new Date(),
+    fechaMatricula: today,
+    fechaExpedicion: today,
     organismo: '',
     qr: '',
     chasis: '',
@@ -105,6 +108,8 @@ const VehiclesForm: React.FC = () => {
     pesoSeco: 0,
     pesoBruto: 0
   });
+
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchOpciones = async () => {
@@ -138,14 +143,17 @@ const VehiclesForm: React.FC = () => {
       if (response.ok) {
         router.push('/vehiculos');
       } else {
-        console.error('Error al crear vehículo');
+        const data = await response.json();
+        setError(data.message || 'Error al crear vehículo');
       }
     } catch (error) {
       console.error('Error:', error);
+      setError('Error al procesar la solicitud');
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setError('');
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -159,21 +167,24 @@ const VehiclesForm: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-2xl font-bold text-center text-gray-500 mb-6">Registro de Vehículo</h2>
           
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+              {error}
+            </div>
+          )}
+          
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Usuario:</label>
-              <select
-                name="idUsuario"
-                value={formData.idUsuario}
+              <label className="block text-sm font-medium text-gray-700">Cédula del Usuario:</label>
+              <input
+                type="text"
+                name="cedula"
+                value={formData.cedula}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
-              >
-                <option value="">Seleccione un usuario</option>
-                {opciones?.usuarios?.map(usuario => (
-                  <option key={usuario.id} value={usuario.id}>Usuario {usuario.id}</option>
-                ))}
-              </select>
+                placeholder="Ingrese la cédula del usuario"
+              />
             </div>
 
             <div>
@@ -185,7 +196,7 @@ const VehiclesForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
               >
-                <option value="">Seleccione una tarjeta</option>
+                <option value="" disabled>Seleccione una tarjeta</option>
                 {opciones?.tarjetas?.map(tarjeta => (
                   <option key={tarjeta.id} value={tarjeta.id}>Tarjeta {tarjeta.id}</option>
                 ))}
@@ -201,7 +212,7 @@ const VehiclesForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
               >
-                <option value="">Seleccione un estado</option>
+                <option value="" disabled>Seleccione un estado</option>
                 {opciones?.estados?.map(estado => (
                   <option key={estado.id} value={estado.id}>{estado.nombre}</option>
                 ))}
@@ -301,7 +312,7 @@ const VehiclesForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
               >
-                <option value="">Seleccione un servicio</option>
+                <option value="" disabled>Seleccione un servicio</option>
                 {opciones?.servicios?.map(servicio => (
                   <option key={servicio.id} value={servicio.id}>{servicio.nombre}</option>
                 ))}
@@ -317,7 +328,7 @@ const VehiclesForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
               >
-                <option value="">Seleccione un combustible</option>
+                <option value="" disabled>Seleccione un combustible</option>
                 {opciones?.combustibles?.map(combustible => (
                   <option key={combustible.id} value={combustible.id}>{combustible.nombre}</option>
                 ))}
@@ -401,7 +412,7 @@ const VehiclesForm: React.FC = () => {
               <input
                 type="date"
                 name="fechaImportacion"
-                value={formData.fechaImportacion.toISOString().split('T')[0]}
+                value={formData.fechaImportacion}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
@@ -425,7 +436,7 @@ const VehiclesForm: React.FC = () => {
               <input
                 type="date"
                 name="fechaMatricula"
-                value={formData.fechaMatricula.toISOString().split('T')[0]}
+                value={formData.fechaMatricula}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
@@ -437,7 +448,7 @@ const VehiclesForm: React.FC = () => {
               <input
                 type="date"
                 name="fechaExpedicion"
-                value={formData.fechaExpedicion.toISOString().split('T')[0]}
+                value={formData.fechaExpedicion}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
