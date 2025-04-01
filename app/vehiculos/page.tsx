@@ -1,4 +1,5 @@
 'use client'
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 interface Vehicle {
@@ -24,7 +25,7 @@ interface Vehicle {
 
 const VehiclesPage = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -58,7 +59,9 @@ const VehiclesPage = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Lista de Vehículos</h1>
-        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-300 ease-in-out">
+        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-300 ease-in-out cursor-pointer" 
+            onClick={() => router.push('/vehiculos/crear')}
+          >
           Agregar Vehículo
         </button>
       </div>
