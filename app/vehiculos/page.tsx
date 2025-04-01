@@ -1,36 +1,129 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
+
+interface Vehicle {
+  idUsuario: number;
+  idTarjeta: number;
+  idEstado: number;
+  interno: string;
+  placa: string;
+  marca: string;
+  linea: string;
+  modelo: number;
+  cilindrada: number;
+  color: string;
+  idServicio: number;
+  importacion: string;
+  fechaImportacion: Date;
+  puertas: number;
+  fechaMatricula: Date;
+  fechaExpedicion: Date;
+  organismo: string;
+  qr: string;
+}
 
 const VehiclesPage = () => {
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const page = 1;
+        const limit = 10;
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos?page=${page}&limit=${limit}`);
+        const data = await response.json();
+        if (data.success) {
+          setVehicles(data.data.vehicles);
+        }
+      } catch (error) {
+        console.error('Error al obtener vehículos:', error);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Lista de Vehículos</h1>
-      
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="py-2 px-4 border-b">Marca</th>
-              <th className="py-2 px-4 border-b">Modelo</th>
-              <th className="py-2 px-4 border-b">Año</th>
-              <th className="py-2 px-4 border-b">Placa</th>
-              <th className="py-2 px-4 border-b">Color</th>
-              <th className="py-2 px-4 border-b">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="py-2 px-4 border-b">Toyota</td>
-              <td className="py-2 px-4 border-b">Corolla</td>
-              <td className="py-2 px-4 border-b">2020</td>
-              <td className="py-2 px-4 border-b">ABC-123</td>
-              <td className="py-2 px-4 border-b">Rojo</td>
-              <td className="py-2 px-4 border-b">
-                <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2">Editar</button>
-                <button className="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">Lista de Vehículos</h1>
+        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-300 ease-in-out">
+          Agregar Vehículo
+        </button>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input
+            type="text"
+            placeholder="Buscar por marca o modelo..."
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Filtrar por año</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+          </select>
+          <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Filtrar por color</option>
+            <option value="rojo">Rojo</option>
+            <option value="azul">Azul</option>
+            <option value="negro">Negro</option>
+            <option value="blanco">Blanco</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Tabla responsive */}
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">Marca</th>
+                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">Modelo</th>
+                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">Placa</th>
+                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">Color</th>
+                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">Acciones</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {vehicles.map((vehicle, index) => (
+                <tr key={index} className="hover:bg-gray-50 transition duration-150">
+                  <td className="py-4 px-4 text-sm text-gray-700">{vehicle.marca}</td>
+                  <td className="py-4 px-4 text-sm text-gray-700">{vehicle.modelo}</td>
+                  <td className="py-4 px-4 text-sm text-gray-700">{vehicle.placa}</td>
+                  <td className="py-4 px-4 text-sm text-gray-700">
+                    <span className="px-3 py-1 rounded-full bg-red-100 text-red-800">{vehicle.color}</span>
+                  </td>
+                  <td className="py-4 px-4 text-sm space-x-2">
+                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition duration-300 ease-in-out">
+                      Editar
+                    </button>
+                    <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md transition duration-300 ease-in-out">
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Paginación */}
+      <div className="mt-6 flex justify-center">
+        <nav className="flex space-x-2">
+          <button className="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300">
+            Anterior
+          </button>
+          <button className="px-3 py-1 rounded-md bg-blue-500 text-white">1</button>
+          <button className="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300">
+            Siguiente
+          </button>
+        </nav>
       </div>
     </div>
   )
