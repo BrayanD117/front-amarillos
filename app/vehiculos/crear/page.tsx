@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
 
 interface Usuario {
   id: number;
@@ -122,7 +123,7 @@ const VehiclesForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.idEstado === 0 || formData.idServicio === 0 || formData.idCombustible === 0) {
-      setError('Por favor, seleccione una opción válida para Estado, Servicio y Combustible.');
+      toast.error('Por favor, seleccione una opción válida para Estado, Servicio y Combustible.');
       return;
     }
     try {
@@ -135,14 +136,46 @@ const VehiclesForm: React.FC = () => {
       });
 
       if (response.ok) {
-        router.push('/vehiculos');
+        toast.success('Vehículo creado exitosamente.');
+        setFormData({
+          cedula: '',
+          idUsuario: undefined,
+          interno: '',
+          placa: '',
+          marca: '',
+          linea: '',
+          modelo: 2024,
+          idEstado: 0,
+          estado: undefined,
+          cilindrada: 0,
+          color: '',
+          idServicio: 0,
+          servicio: undefined,
+          clase: '',
+          carroceria: '',
+          idCombustible: 0,
+          capacidad: 0,
+          motor: '',
+          chasis: '',
+          importacion: '',
+          fechaImportacion: '',
+          puertas: 0,
+          fechaMatricula: '',
+          fechaExpedicion: '',
+          organismo: '',
+          qr: '',
+        });
+        setTimeout(() => {
+          router.push('/vehiculos');
+        }, 2000);
+        
       } else {
         const data = await response.json();
-        setError(data.message || 'Error al crear vehículo');
+        toast.error(data.message || 'Error al crear vehículo');
       }
     } catch (error) {
       console.error('Error:', error);
-      setError('Error al procesar la solicitud');
+      toast.error('Error al procesar la solicitud');
     }
   };
 
@@ -466,6 +499,7 @@ const VehiclesForm: React.FC = () => {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
