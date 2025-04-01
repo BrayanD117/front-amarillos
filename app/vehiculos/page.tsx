@@ -1,8 +1,10 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 
 interface Vehicle {
+  id: number;
   idUsuario: number;
   idTarjeta: number;
   idEstado: number;
@@ -55,6 +57,32 @@ const VehiclesPage = () => {
     return () => clearTimeout(debounceSearch);
   }, [searchTerm]);
 
+  const handleUpdate = (id: number) => {
+    router.push(`/vehiculos/actualizar?id=${id}`);
+  };
+
+  const handleDelete = async (id: number) => {
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este vehículo? Esta acción no se puede deshacer.');
+    if (confirmDelete) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos/${id}`, {
+          method: 'DELETE',
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          toast.success(data.message);
+          setVehicles(prevVehicles => prevVehicles.filter(vehicle => vehicle.id !== id));
+        } else {
+          toast.error(data.message || 'Error al eliminar el vehículo');
+        }
+      } catch (error) {
+        console.error('Error al eliminar vehículo:', error);
+        toast.error('Error al procesar la solicitud de eliminación');
+      }
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
@@ -92,7 +120,6 @@ const VehiclesPage = () => {
         </div>
       </div>
 
-      {/* Tabla responsive */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full">
@@ -115,10 +142,10 @@ const VehiclesPage = () => {
                     <span className="px-3 py-1 rounded-full bg-red-100 text-red-800">{vehicle.color}</span>
                   </td>
                   <td className="py-4 px-4 text-sm space-x-2">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition duration-300 ease-in-out">
+                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition duration-300 ease-in-out cursor-pointer" onClick={() => handleUpdate(vehicle.id)}>
                       Editar
                     </button>
-                    <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md transition duration-300 ease-in-out">
+                    <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md transition duration-300 ease-in-out cursor-pointer" onClick={() => handleDelete(vehicle.id)}>
                       Eliminar
                     </button>
                   </td>

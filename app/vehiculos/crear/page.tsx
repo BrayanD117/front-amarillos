@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface Usuario {
   id: number;
@@ -499,7 +499,6 @@ const VehiclesForm: React.FC = () => {
           </button>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 };
