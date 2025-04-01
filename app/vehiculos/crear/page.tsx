@@ -37,6 +37,12 @@ interface VehiculoFormData {
   color: string;
   idServicio: number;
   servicio?: Servicio;
+  clase: string;
+  carroceria: string;
+  idCombustible: number;
+  capacidad: number;
+  motor: string;
+  chasis: string;
   importacion: string;
   fechaImportacion: string;
   puertas: number;
@@ -44,14 +50,6 @@ interface VehiculoFormData {
   fechaExpedicion: string;
   organismo: string;
   qr: string;
-  chasis: string;
-  motor: string;
-  cilindraje: number;
-  idCombustible: number;
-  capacidadPasajeros: number;
-  capacidadCarga: number;
-  pesoSeco: number;
-  pesoBruto: number;
 }
 
 interface Opciones {
@@ -74,15 +72,23 @@ const VehiclesForm: React.FC = () => {
   
   const [formData, setFormData] = useState<VehiculoFormData>({
     cedula: '',
-    idEstado: 0,
+    idUsuario: undefined,
     interno: '',
     placa: '',
     marca: '',
     linea: '',
     modelo: 2024,
+    idEstado: 0,
+    estado: undefined,
     cilindrada: 0,
     color: '',
     idServicio: 0,
+    servicio: undefined,
+    clase: '',
+    carroceria: '',
+    capacidad: 0,
+    motor: '',
+    chasis: '',
     importacion: '',
     fechaImportacion: today,
     puertas: 0,
@@ -90,14 +96,7 @@ const VehiclesForm: React.FC = () => {
     fechaExpedicion: today,
     organismo: '',
     qr: '',
-    chasis: '',
-    motor: '',
-    cilindraje: 0,
     idCombustible: 0,
-    capacidadPasajeros: 0,
-    capacidadCarga: 0,
-    pesoSeco: 0,
-    pesoBruto: 0
   });
 
   const [error, setError] = useState('');
@@ -122,6 +121,10 @@ const VehiclesForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.idEstado === 0 || formData.idServicio === 0 || formData.idCombustible === 0) {
+      setError('Por favor, seleccione una opción válida para Estado, Servicio y Combustible.');
+      return;
+    }
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos`, {
         method: 'POST',
@@ -187,7 +190,7 @@ const VehiclesForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
               >
-                <option value="" disabled>Seleccione un estado</option>
+                <option value={0} disabled>Seleccione un estado</option>
                 {opciones?.estados?.map(estado => (
                   <option key={estado.id} value={estado.id}>{estado.nombre}</option>
                 ))}
@@ -287,11 +290,35 @@ const VehiclesForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
               >
-                <option value="" disabled>Seleccione un servicio</option>
+                <option value={0} disabled>Seleccione un servicio</option>
                 {opciones?.servicios?.map(servicio => (
                   <option key={servicio.id} value={servicio.id}>{servicio.nombre}</option>
                 ))}
               </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Clase:</label>
+              <input
+                type="text"
+                name="clase"
+                value={formData.clase}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Carrocería:</label>
+              <input
+                type="text"
+                name="carroceria"
+                value={formData.carroceria}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
+                required
+              />
             </div>
 
             <div>
@@ -303,7 +330,7 @@ const VehiclesForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
               >
-                <option value="" disabled>Seleccione un combustible</option>
+                <option value={0} disabled>Seleccione un combustible</option>
                 {opciones?.combustibles?.map(combustible => (
                   <option key={combustible.id} value={combustible.id}>{combustible.nombre}</option>
                 ))}
@@ -311,11 +338,11 @@ const VehiclesForm: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Capacidad de Pasajeros:</label>
+              <label className="block text-sm font-medium text-gray-700">Capacidad:</label>
               <input
                 type="number"
-                name="capacidadPasajeros" 
-                value={formData.capacidadPasajeros}
+                name="capacidad" 
+                value={formData.capacidad}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
@@ -323,23 +350,11 @@ const VehiclesForm: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Capacidad de Carga:</label>
+              <label className="block text-sm font-medium text-gray-700">Puertas:</label>
               <input
                 type="number"
-                name="capacidadCarga"
-                value={formData.capacidadCarga}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Peso Seco:</label>
-              <input
-                type="number"
-                name="pesoSeco"
-                value={formData.pesoSeco}
+                name="puertas"
+                value={formData.puertas}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
@@ -388,18 +403,6 @@ const VehiclesForm: React.FC = () => {
                 type="date"
                 name="fechaImportacion"
                 value={formData.fechaImportacion}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Puertas:</label>
-              <input
-                type="number"
-                name="puertas"
-                value={formData.puertas}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
                 required
