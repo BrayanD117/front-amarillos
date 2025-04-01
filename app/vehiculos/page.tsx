@@ -25,12 +25,19 @@ interface Vehicle {
 const VehiclesPage = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
         const page = 1;
         const limit = 10;
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos?page=${page}&limit=${limit}`);
+        let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos?page=${page}&limit=${limit}`;
+        
+        if (searchTerm) {
+          url += `&search=${encodeURIComponent(searchTerm)}`;
+        }
+        const response = await fetch(url);
         const data = await response.json();
         if (data.success) {
           setVehicles(data.data.vehicles);
@@ -40,8 +47,12 @@ const VehiclesPage = () => {
       }
     };
 
-    fetchVehicles();
-  }, []);
+    const debounceSearch = setTimeout(() => {
+      fetchVehicles();
+    }, 500);
+
+    return () => clearTimeout(debounceSearch);
+  }, [searchTerm]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -58,6 +69,8 @@ const VehiclesPage = () => {
             type="text"
             placeholder="Buscar por marca o modelo..."
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="">Filtrar por año</option>
