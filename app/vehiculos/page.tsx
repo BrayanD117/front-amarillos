@@ -25,7 +25,7 @@ interface Vehicle {
   qr: string;
 }
 
-const VehiclesPage = () => {
+const VehiclesUpdatePage = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,7 +58,7 @@ const VehiclesPage = () => {
   }, [searchTerm]);
 
   const handleUpdate = (id: number) => {
-    router.push(`/vehiculos/actualizar?id=${id}`);
+    router.push(`/vehiculos/actualizar/${id}`);
   };
 
   const handleDelete = async (id: number) => {
@@ -172,4 +172,4 @@ const VehiclesPage = () => {
   )
 }
 
-export default VehiclesPage;
+export default VehiclesUpdatePage;
