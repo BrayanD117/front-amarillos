@@ -38,7 +38,8 @@ const VehiclesUpdatePage = () => {
         let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos?page=${page}&limit=${limit}`;
         
         if (searchTerm) {
-          url += `&search=${encodeURIComponent(searchTerm)}`;
+          const upperCaseSearchTerm = searchTerm.toUpperCase();
+          url += `&search=${encodeURIComponent(upperCaseSearchTerm)}`;
         }
         const response = await fetch(url);
         const data = await response.json();
@@ -98,25 +99,11 @@ const VehiclesUpdatePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <input
             type="text"
-            placeholder="Buscar por marca o modelo..."
+            placeholder="Buscar por placa, marca o modelo..."
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">Filtrar por año</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-          </select>
-          <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">Filtrar por color</option>
-            <option value="rojo">Rojo</option>
-            <option value="azul">Azul</option>
-            <option value="negro">Negro</option>
-            <option value="blanco">Blanco</option>
-          </select>
         </div>
       </div>
 
