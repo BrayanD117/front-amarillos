@@ -7,10 +7,6 @@ interface Usuario {
   id: number;
 }
 
-interface Tarjeta {
-  id: number;
-}
-
 interface Estado {
   id: number;
   nombre: string;
@@ -30,8 +26,6 @@ interface VehiculoFormData {
   cedula: string;
   idUsuario?: number;
   usuario?: Usuario;
-  idTarjeta: number;
-  tarjeta?: Tarjeta;
   idEstado: number;
   estado?: Estado;
   interno: string;
@@ -62,7 +56,6 @@ interface VehiculoFormData {
 
 interface Opciones {
   usuarios: Usuario[];
-  tarjetas: Tarjeta[];
   estados: Estado[];
   servicios: Servicio[];
   combustibles: Combustible[];
@@ -74,7 +67,6 @@ const VehiclesForm: React.FC = () => {
 
   const [opciones, setOpciones] = useState<Opciones>({
     usuarios: [],
-    tarjetas: [],
     estados: [],
     servicios: [],
     combustibles: []
@@ -82,7 +74,6 @@ const VehiclesForm: React.FC = () => {
   
   const [formData, setFormData] = useState<VehiculoFormData>({
     cedula: '',
-    idTarjeta: 0,
     idEstado: 0,
     interno: '',
     placa: '',
@@ -185,22 +176,6 @@ const VehiclesForm: React.FC = () => {
                 required
                 placeholder="Ingrese la cédula del usuario"
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Tarjeta:</label>
-              <select
-                name="idTarjeta"
-                value={formData.idTarjeta}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 text-gray-500 px-3 py-2"
-                required
-              >
-                <option value="" disabled>Seleccione una tarjeta</option>
-                {opciones?.tarjetas?.map(tarjeta => (
-                  <option key={tarjeta.id} value={tarjeta.id}>Tarjeta {tarjeta.id}</option>
-                ))}
-              </select>
             </div>
 
             <div>
