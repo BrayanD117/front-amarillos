@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 const HomePage = () => {
 
@@ -41,6 +42,9 @@ const HomePage = () => {
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 border border-yellow-100">
         <h1 className="text-2xl font-bold text-center text-gray-500 mb-6">Iniciar sesión</h1>
+        <div className="flex justify-center mb-4">
+          <Image src="/amarillos.webp" alt="Amarillos" width={100} height={100} />
+        </div>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="text-center mb-6">
             <h2 className="text-xl font-bold text-yellow-500">¡Bienvenido a Amarillos!</h2>
