@@ -11,14 +11,14 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div 
           className="bg-yellow-100 p-6 rounded-lg shadow-md cursor-pointer"
-          onClick={() => router.push('/usuarios')}
+          onClick={() => router.push('/admin/usuarios')}
         >
           <h2 className="text-xl font-semibold text-gray-700">Usuarios</h2>
           <p className="text-gray-600">Gestiona los usuarios de la plataforma.</p>
         </div>
         <div 
           className="bg-yellow-100 p-6 rounded-lg shadow-md cursor-pointer"
-          onClick={() => router.push('/vehiculos')}
+          onClick={() => router.push('/admin/vehiculos')}
         >
           <h2 className="text-xl font-semibold text-gray-700">Vehículos</h2>
           <p className="text-gray-600">Gestiona los vehículos disponibles.</p>
