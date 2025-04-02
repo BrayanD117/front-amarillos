@@ -32,7 +32,7 @@ const HomePage = () => {
 
       router.replace('/admin/panel');
 
-    } catch (err) {
+    } catch {
       setError('Error de conexión con el servidor')
     }
   }
