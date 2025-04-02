@@ -7,7 +7,9 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('tokenAcceso')?.value
   const { pathname } = request.nextUrl
 
-  const isPrivatePath = pathname.startsWith('/admin') || pathname.startsWith('/conductor')
+  const isPrivatePath = pathname.startsWith('/admin') ||
+    pathname.startsWith('/conductor') ||
+    pathname.startsWith('/vehiculos')
 
   if (!token && isPrivatePath) {
     return NextResponse.redirect(new URL('/', request.url))
@@ -35,5 +37,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/conductor/:path*']
+    matcher: ['/admin/:path*', '/conductor/:path*', '/vehiculos/:path*']
 }  
