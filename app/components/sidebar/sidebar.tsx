@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }: { isOpen: boolean, toggleS
           </ul>
           <div className="mt-5">
             <button
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg w-full"
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg w-full cursor-pointer"
               onClick={handleLogout}
             >
               Cerrar Sesión
