@@ -60,7 +60,7 @@ interface Opciones {
   combustibles: Combustible[];
 }
 
-const VehiclesForm: React.FC = () => {
+const VehiclesUpdateForm: React.FC = () => {
   const router = useRouter();
   const today = new Date().toISOString().split('T')[0];
   const [vehicleId, setVehicleId] = useState<string | undefined>(undefined);
@@ -106,7 +106,9 @@ const VehiclesForm: React.FC = () => {
   useEffect(() => {
     const fetchOpciones = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos/opciones`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos/opciones`, {
+          credentials: 'include',
+        });
         if (response.ok) {
           const data = await response.json();
           setOpciones(data.data);
@@ -129,7 +131,9 @@ const VehiclesForm: React.FC = () => {
     if (vehicleId) {
       const fetchVehicle = async () => {
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos/${vehicleId}`);
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos/${vehicleId}`, {
+            credentials: 'include',
+          });
           if (response.ok) {
             const data = await response.json();
             setFormData(data.data);
@@ -158,6 +162,7 @@ const VehiclesForm: React.FC = () => {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
@@ -500,4 +505,4 @@ const VehiclesForm: React.FC = () => {
   );
 };
 
-export default VehiclesForm;
+export default VehiclesUpdateForm;

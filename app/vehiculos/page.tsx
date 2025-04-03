@@ -25,7 +25,7 @@ interface Vehicle {
   qr: string;
 }
 
-const VehiclesUpdatePage = () => {
+const VehiclesPage = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,7 +41,10 @@ const VehiclesUpdatePage = () => {
           const upperCaseSearchTerm = searchTerm.toUpperCase();
           url += `&search=${encodeURIComponent(upperCaseSearchTerm)}`;
         }
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          method: 'GET',
+          credentials: 'include',
+        });
         const data = await response.json();
         if (data.success) {
           setVehicles(data.data.vehicles);
@@ -68,6 +71,7 @@ const VehiclesUpdatePage = () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vehiculos/${id}`, {
           method: 'DELETE',
+          credentials: 'include',
         });
 
         const data = await response.json();
@@ -159,4 +163,4 @@ const VehiclesUpdatePage = () => {
   )
 }
 
-export default VehiclesUpdatePage;
+export default VehiclesPage;
