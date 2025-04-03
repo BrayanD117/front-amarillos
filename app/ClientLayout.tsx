@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Sidebar from './components/sidebar/sidebar';
 
@@ -33,7 +33,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
         <Sidebar
           isOpen={sidebarOpen}
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-          isMobile={isMobile}
+          
         />
       )}
       <main
