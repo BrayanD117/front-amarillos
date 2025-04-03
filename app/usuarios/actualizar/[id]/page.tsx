@@ -32,6 +32,14 @@ interface Opcion {
     nombre: string;
 }
 
+interface Opciones {
+    tiposDocumento: Opcion[];
+    gruposSanguineos: Opcion[];
+    categoriasLicencia: Opcion[];
+    roles: Opcion[];
+    estados: Opcion[];
+}
+
 const UsuariosUpdateForm = () => {
     const router = useRouter();
     const [userId, setUserId] = useState<string | undefined>();
@@ -58,13 +66,7 @@ const UsuariosUpdateForm = () => {
         idEstado: 0
     });
 
-    const [opciones, setOpciones] = useState<{
-        tiposDocumento: Opcion[];
-        gruposSanguineos: Opcion[];
-        categoriasLicencia: Opcion[];
-        roles: Opcion[];
-        estados: Opcion[];
-    }>({
+    const [opciones, setOpciones] = useState<Opciones>({
         tiposDocumento: [],
         gruposSanguineos: [],
         categoriasLicencia: [],
@@ -197,7 +199,7 @@ const UsuariosUpdateForm = () => {
                                     onChange={handleChange}
                                 >
                                     <option value="">Seleccione un rol</option>
-                                    {opciones.roles.map((rol: any) => (
+                                    {opciones.roles.map((rol: Opcion) => (
                                         <option key={rol.id} value={rol.id}>
                                         {rol.nombre}
                                         </option>
@@ -219,7 +221,7 @@ const UsuariosUpdateForm = () => {
                                     onChange={handleChange}
                                 >
                                     <option value="">Seleccione un estado</option>
-                                    {opciones.estados.map((estado: any) => (
+                                    {opciones.estados.map((estado: Opcion) => (
                                         <option key={estado.id} value={estado.id}>
                                         {estado.nombre}
                                         </option>
@@ -307,7 +309,7 @@ const UsuariosUpdateForm = () => {
                                     onChange={handleChange}
                                 >
                                     <option value="">Seleccione un tipo de documento</option>
-                                    {opciones.tiposDocumento.map((tipoDoc: any) => (
+                                    {opciones.tiposDocumento.map((tipoDoc: Opcion) => (
                                         <option key={tipoDoc.id} value={tipoDoc.id}>
                                             {tipoDoc.nombre}
                                         </option>
@@ -380,7 +382,7 @@ const UsuariosUpdateForm = () => {
                                     onChange={handleChange}
                                 >
                                     <option value="">Seleccione un grupo sanguíneo</option>
-                                    {opciones.gruposSanguineos.map((grupoSanguineo: any) => (
+                                    {opciones.gruposSanguineos.map((grupoSanguineo: Opcion) => (
                                         <option key={grupoSanguineo.id} value={grupoSanguineo.id}>
                                             {grupoSanguineo.nombre}
                                         </option>
@@ -472,7 +474,7 @@ const UsuariosUpdateForm = () => {
                                     onChange={handleChange}
                                 >
                                     <option value="">Seleccione una categoría</option>
-                                    {opciones.categoriasLicencia.map((categoria: any) => (
+                                    {opciones.categoriasLicencia.map((categoria: Opcion) => (
                                         <option key={categoria.id} value={categoria.id}>
                                             {categoria.nombre}
                                         </option>
