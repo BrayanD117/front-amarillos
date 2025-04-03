@@ -25,11 +25,11 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const pathname = usePathname();
-  const isAdminRoute = pathname.startsWith('/admin');
+  const isAllowedRoute = pathname.startsWith('/admin') || pathname.startsWith('/vehiculos') || pathname.startsWith('/usuarios');
 
   return (
     <div className="flex">
-      {isAdminRoute && (
+      {isAllowedRoute && (
         <Sidebar
           isOpen={sidebarOpen}
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
