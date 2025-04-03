@@ -191,7 +191,7 @@ const VehiclesUpdateForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center py-8">
       <div className="bg-white p-8 rounded-lg shadow-lg w-[800px] border border-yellow-100">
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-2xl font-bold text-center text-gray-500 mb-6">Actualizar Vehículo</h2>
