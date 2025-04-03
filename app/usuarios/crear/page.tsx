@@ -29,6 +29,11 @@ interface CategoriaLicencia {
   nombre: string;
 }
 
+interface Opcion {
+  id: number;
+  nombre: string;
+}
+
 interface Opciones {
   roles: Rol[];
   estados: Estado[];
@@ -89,7 +94,7 @@ const UsuariosForm: React.FC = () => {
     idEstado: 0,
   });
 
-  const [previewFoto, setPreviewFoto] = useState<string>("");
+  //const [previewFoto, setPreviewFoto] = useState<string>("");
   const [opciones, setOpciones] = useState<Opciones>({
     roles: [],
     estados: [],
@@ -113,7 +118,7 @@ const UsuariosForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    let newData = { ...formData, [name]: value };
+    const newData = { ...formData, [name]: value };
 
     if (name === "numeroDocumento") {
       newData.usuario = value;
@@ -122,17 +127,17 @@ const UsuariosForm: React.FC = () => {
     setFormData(newData);
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, foto: reader.result as string }));
-        setPreviewFoto(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setFormData(prev => ({ ...prev, foto: reader.result as string }));
+  //       setPreviewFoto(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,6 +162,7 @@ const UsuariosForm: React.FC = () => {
         toast.error(data.msg || "Error al crear el usuario");
       }
     } catch (error) {
+      console.error("Error al crear usuario:", error);
       toast.error("Error de red o servidor");
     }
   };
@@ -181,7 +187,7 @@ const UsuariosForm: React.FC = () => {
                   onChange={handleChange}
                 >
                   <option value="">Seleccione un rol</option>
-                  {opciones.roles.map((rol: any) => (
+                  {opciones.roles.map((rol: Opcion) => (
                     <option key={rol.id} value={rol.id}>
                       {rol.nombre}
                     </option>
@@ -203,7 +209,7 @@ const UsuariosForm: React.FC = () => {
                   onChange={handleChange}
                 >
                   <option value="">Seleccione un estado</option>
-                  {opciones.estados.map((estado: any) => (
+                  {opciones.estados.map((estado: Opcion) => (
                     <option key={estado.id} value={estado.id}>
                       {estado.nombre}
                     </option>
@@ -291,7 +297,7 @@ const UsuariosForm: React.FC = () => {
                   onChange={handleChange}
                 >
                   <option value="">Seleccione un tipo de documento</option>
-                  {opciones.tiposDocumento.map((tipoDoc: any) => (
+                  {opciones.tiposDocumento.map((tipoDoc: Opcion) => (
                     <option key={tipoDoc.id} value={tipoDoc.id}>
                       {tipoDoc.nombre}
                     </option>
@@ -364,7 +370,7 @@ const UsuariosForm: React.FC = () => {
                   onChange={handleChange}
                 >
                   <option value="">Seleccione un grupo sanguíneo</option>
-                  {opciones.gruposSanguineos.map((grupoSanguineo: any) => (
+                  {opciones.gruposSanguineos.map((grupoSanguineo: Opcion) => (
                     <option key={grupoSanguineo.id} value={grupoSanguineo.id}>
                       {grupoSanguineo.nombre}
                     </option>
@@ -456,7 +462,7 @@ const UsuariosForm: React.FC = () => {
                   onChange={handleChange}
                 >
                   <option value="">Seleccione una categoría</option>
-                  {opciones.categoriasLicencia.map((categoria: any) => (
+                  {opciones.categoriasLicencia.map((categoria: Opcion) => (
                     <option key={categoria.id} value={categoria.id}>
                       {categoria.nombre}
                     </option>
