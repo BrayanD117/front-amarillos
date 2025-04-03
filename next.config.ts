@@ -7,10 +7,10 @@ const nextConfig: NextConfig = {
             source: '/admin/vehiculos',
             destination: '/vehiculos',
         },
-        // {
-        //     source: '/scrutiny/reports',
-        //     destination: '/private/reports',
-        // },
+        {
+            source: '/admin/usuarios',
+            destination: '/usuarios',
+        },
     ];
   }
 };
