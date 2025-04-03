@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
 
   const isPrivatePath = pathname.startsWith('/admin') ||
     pathname.startsWith('/conductor') ||
+    pathname.startsWith('/usuarios') ||
     pathname.startsWith('/vehiculos')
 
   if (!token && isPrivatePath) {
@@ -19,6 +20,7 @@ export async function middleware(request: NextRequest) {
     try {
       const { payload } = await jwtVerify(token, secret)
       const rol = payload.rol
+      console.log('Payload:', payload);
 
       if (rol === 'admin' && pathname.startsWith('/conductor')) {
         return NextResponse.redirect(new URL('/admin/panel', request.url))
@@ -37,5 +39,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/conductor/:path*', '/vehiculos/:path*']
+    matcher: ['/admin/:path*', '/conductor/:path*', '/usuarios/:path*', '/vehiculos/:path*']
 }  
